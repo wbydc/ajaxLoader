@@ -94,6 +94,7 @@ $.ajaxLoader = function(action = 'init',options) {
         return __load(window.ajaxLoader.page);
       }
     });
+    return true;
   }
 
   var methods = {
@@ -143,15 +144,21 @@ $.ajaxLoader = function(action = 'init',options) {
       return true;
     },
     load: function(url) {
-      window.ajaxLoader.bridge.unload(window.ajaxLoader.page);
-      var res = window.ajaxLoader ? __load(url) : false;
-      window.ajaxLoader.bridge.loaded(window.ajaxLoader.page);
+      window.ajaxLoader.bridge.unload(url);
+      var
+        surl = window.ajaxLoader.page,
+        res = window.ajaxLoader ? __load(url) : false;
+      window.ajaxLoader.bridge.loaded(surl);
 
-      window.ajaxLoader.bridge = {
-        unload: ()=>{},
-        load: ()=>{}
+      if (res) {
+        window.ajaxLoader.bridge = {
+          unload: ()=>{},
+          load: ()=>{}
+        }
+        return res;
+      } else {
+        return false;
       }
-      return res;
     }
   }
 
