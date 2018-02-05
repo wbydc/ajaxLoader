@@ -14,11 +14,14 @@ Download script and connect it to your page with jQuery
 ```html
 <script>
   $.ajaxLoader(options);
+  // or (only if loader was already initialized!):
+  $.ajaxLoader('load',url);
 </script>
 ```
 
 where
 * options - `object` with parametres
+* url - `string` url to load
 
 ## Options
 
@@ -40,8 +43,23 @@ where
 |headerPrefix|*String*|Prefix for identify response headers to parse|`'Data-'`|
 |headers|*Object*|Object of functions to handle response headers. Each function should be named as header, that this function will handle. (See example below) Receives header value|`{}`|
 
+## Bridges
+
+Here we have two bridges - functions that should link two pages
+First bridge - 'unload' executes before request for new page and gets next page url
+Second one - 'loaded' executes after new page was loaded and gets previous page url
+
+```javascript
+  $.ajaxLoader.bridge(type,callback);
+```
+
+where
+* type - `string` bridge type ('unload' or 'loaded')
+* callback - `function` bridge function
+
 ## Example
 
+Basic example
 ```javascript
   $.ajaxLoader({
     // specifies where we will load content
